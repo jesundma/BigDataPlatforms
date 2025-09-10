@@ -1,21 +1,24 @@
 {
-  "name": "Python + Docker + Jupyter",
-  "image": "mcr.microsoft.com/devcontainers/python:3",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "moby": true,
-      "dockerDashComposeVersion": "v2",
-      "enableNonRootDocker": "true"
-    },
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11"
+  "name": "Python + PySpark + Jupyter",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "postStartCommand": "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter"
+      ]
     }
   },
   "forwardPorts": [8888],
-  "postCreateCommand": "pip install jupyterlab",
-  "remoteUser": "vscode",
-  "mounts": [
-    "source=dind-var-lib-docker,target=/var/lib/docker,type=volume"
-  ]
+  "portsAttributes": {
+    "8888": {
+      "label": "Jupyter Lab",
+      "onAutoForward": "openBrowser"
+    }
+  }
 }
