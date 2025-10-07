@@ -13,10 +13,18 @@ ENV PATH=$JAVA_HOME/bin:$PATH:/usr/local/bin:/usr/bin:/bin
 # Upgrade pip and install Python packages
 RUN python3 -m pip install --upgrade pip --break-system-packages && \
     python3 -m pip install --break-system-packages \
-        pyspark jupyterlab pandas matplotlib numpy graphframes
+        pyspark==3.5.0 \
+        jupyterlab \
+        pandas \
+        numpy \
+        matplotlib \
+        graphframes
 
-# Configure PySpark to automatically fetch GraphFrames 0.8.3
+# Set environment variable to automatically fetch GraphFrames when Spark starts
 ENV PYSPARK_SUBMIT_ARGS="--packages graphframes:graphframes:0.8.3-spark3.5-s_2.12 pyspark-shell"
+
+# Optional: create Spark JAR directory (if needed for other JARs)
+RUN mkdir -p /opt/spark/jars
 
 # Create vscode user (default for Codespaces)
 RUN useradd -m -s /bin/bash vscode && \
