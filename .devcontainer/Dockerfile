@@ -15,13 +15,8 @@ RUN python3 -m pip install --upgrade pip --break-system-packages && \
     python3 -m pip install --break-system-packages \
         pyspark jupyterlab pandas matplotlib numpy graphframes
 
-# Download GraphFrames JAR (compatible with Spark 4.0.1 / Scala 2.12)
-RUN mkdir -p /opt/spark/jars && \
-    curl -L -o /opt/spark/jars/graphframes.jar \
-        https://repos.spark-packages.org/graphframes/graphframes/0.8.3-spark4.0-s_2.12/graphframes-0.8.3-spark4.0-s_2.12.jar
-
-# Configure PySpark to automatically use GraphFrames JAR
-ENV PYSPARK_SUBMIT_ARGS="--jars /opt/spark/jars/graphframes.jar pyspark-shell"
+# Configure PySpark to automatically fetch GraphFrames 0.8.3
+ENV PYSPARK_SUBMIT_ARGS="--packages graphframes:graphframes:0.8.3-spark3.5-s_2.12 pyspark-shell"
 
 # Create vscode user (default for Codespaces)
 RUN useradd -m -s /bin/bash vscode && \
